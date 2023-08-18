@@ -38,10 +38,10 @@ std::vector<Eigen::Vector3d> DeSkewScan(const std::vector<Eigen::Vector3d> &fram
                                         const std::vector<double> &timestamps,
                                         const Sophus::SE3d &start_pose,
                                         const Sophus::SE3d &finish_pose) {
-    const auto delta_pose = (start_pose.inverse() * finish_pose).log();
+    const auto delta_pose = (start_pose.inverse() * finish_pose).log(); // N-2 --> N-1까지의 pose. delta pose가 몇초에 의해 발생한 변위인지는 계산하지 않음! 이부분 개선 필요.
     std::vector<Eigen::Vector3d> corrected_frame(frame.size());
     tbb::parallel_for(size_t(0), frame.size(), [&](size_t i) {
-        const auto motion = Sophus::SE3d::exp((timestamps[i] - mid_pose_timestamp) * delta_pose);
+        const auto motion = Sophus::SE3d::exp((timestamps[i] - mid_pose_timestamp) * delta_pose); //  timestamps[i]는 스캔 시작과 끝을 기준으로 0~1로 노말라이즈 돼있음
         corrected_frame[i] = motion * frame[i];
     });
     return corrected_frame;

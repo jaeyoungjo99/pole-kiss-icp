@@ -45,8 +45,8 @@ KissICP::Vector3dVectorTuple KissICP::RegisterFrame(const std::vector<Eigen::Vec
         if (N <= 2) return frame;
 
         // Estimate linear and angular velocities
-        const auto &start_pose = poses_[N - 2];
-        const auto &finish_pose = poses_[N - 1];
+        const auto &start_pose = poses_[N - 2]; // N-2 시간 위치
+        const auto &finish_pose = poses_[N - 1]; // N-1 시간 위치
         return DeSkewScan(frame, timestamps, start_pose, finish_pose);
     }();
     return RegisterFrame(deskew_frame);

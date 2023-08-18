@@ -50,6 +50,8 @@ VoxelHashMap::Vector3dVectorTuple VoxelHashMap::GetCorrespondences(
     const Vector3dVector &points, double max_correspondance_distance) const {
     // Lambda Function to obtain the KNN of one point, maybe refactor
     auto GetClosestNeighboor = [&](const Eigen::Vector3d &point) {
+
+        // 현재 탐색 포인트의 복셀 주변의 27개의 복셀 공간 할당
         auto kx = static_cast<int>(point[0] / voxel_size_);
         auto ky = static_cast<int>(point[1] / voxel_size_);
         auto kz = static_cast<int>(point[2] / voxel_size_);
@@ -63,6 +65,7 @@ VoxelHashMap::Vector3dVectorTuple VoxelHashMap::GetCorrespondences(
             }
         }
 
+        // 27개 복셀중 복셀 내부 포인트 존재하는 것만 neighbor에 할당
         using Vector3dVector = std::vector<Eigen::Vector3d>;
         Vector3dVector neighboors;
         neighboors.reserve(27 * max_points_per_voxel_);
@@ -78,6 +81,7 @@ VoxelHashMap::Vector3dVectorTuple VoxelHashMap::GetCorrespondences(
             }
         });
 
+        // neighbor중 제일 가까운 포인트를 Euclidean distance로 탐색
         Eigen::Vector3d closest_neighbor;
         double closest_distance2 = std::numeric_limits<double>::max();
         std::for_each(neighboors.cbegin(), neighboors.cend(), [&](const auto &neighbor) {

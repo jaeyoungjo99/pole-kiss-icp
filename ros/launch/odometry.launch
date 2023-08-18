@@ -5,12 +5,12 @@
   <arg name="visualize" default="true"/>
   <arg name="odom_frame" default="odom"/>
   <arg name="child_frame" default="base_link"/>
-  <arg name="topic" default=""/>
+  <arg name="topic" default="/processing/pole_points"/>
   <arg name="publish_odom_tf" default="true"/>
   <arg name="publish_alias_tf" default="true"/>
 
   <!-- KISS-ICP paramaters -->
-  <arg name="deskew" default="false"/>
+  <arg name="deskew" default="true"/>
   <arg name="max_range" default="100.0" />
   <arg name="min_range" default="5.0" />
   <arg name="voxel_size" default="" />
